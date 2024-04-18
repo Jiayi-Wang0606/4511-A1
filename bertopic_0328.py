@@ -52,9 +52,11 @@ dataset = Dataset()
 len(dataset)
 documents=dataset[:][0]
 
-# Change topic_names to llama2 topic
+# Prepare topic_data for visualization
 wrapped_model = BERTopicWrapper(loaded_model)
 topic_data = wrapped_model.prepare_topic_data(documents)
+
+# Change topic_names to llama2 topic
 topic_info = loaded_model.get_topic_info()
 topic_info['Key_word'] = topic_info['Llama2'].apply(lambda x: x[0])
 topic_data['topic_names'] = topic_info.loc[loaded_model.topic_sizes_.keys(),'Key_word'].tolist()
