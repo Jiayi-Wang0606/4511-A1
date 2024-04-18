@@ -1,6 +1,5 @@
 # Setup
 """
-
 pip install bertopic
 
 pip install topic-wizard
@@ -21,9 +20,7 @@ from bertopic import BERTopic
 import os
 from google.colab import drive
 drive.mount('/content/drive')
-
 path = "/content/drive/My Drive"
-
 os.chdir(path)
 
 """## fourth model - 日期处理后（2022-01-01 - 2022-05-01）"""
@@ -134,25 +131,6 @@ class Dataset(torch.utils.data.Dataset):
 
 print("loading data...")
 dataset = Dataset()
-len(dataset)# 1. load data
-class Dataset(torch.utils.data.Dataset):
-    def __init__(self):
-        self.raw_data = pd.read_json(loading_dir+"News_Category_Dataset_v3.json", lines=True)
-
-    def __len__(self):
-        return len(self.raw_data)
-
-    def __getitem__(self, i):
-        text = self.raw_data['headline'].iloc[i] + ' | ' + self.raw_data['short_description'].iloc[i]
-        label = self.raw_data['category'].iloc[i]
-        timestamp = self.raw_data['date'].iloc[i]
-
-
-        return text, label, timestamp
-
-
-print("loading data...")
-dataset = Dataset()
 len(dataset)
 
 documents=dataset[:][0]
@@ -162,67 +140,4 @@ topic_data4 = wrapped_model4.prepare_topic_data(documents)
 topicwizard.visualize(topic_data=topic_data4)
 
 topic_data4
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""# Wrong Version"""
-
-import sys
-import topicwizard
-sys.path.append('/content/drive/My Drive/Colab Notebooks/4511')
-from topic_wizard_bertopic import BERTopicWrapper
-
-model = BERTopic(language="english")
-wrapped_model = BERTopicWrapper(model)
-topicwizard.visualize(docs, model=wrapped_model)
-
-model = BERTopic(language="english")
-wrapped_model = BERTopicWrapper(model)
-topic_data = wrapped_model.prepare_topic_data(docs)
-
-from topicwizard.figures import topic_map
-topic_map(topic_data)
-
-model.topics_
-
-#Original import
-'''from topicwizard.compatibility import BERTopicWrapper
-model = BERTopic(language="english")
-wrapped_model = BERTopicWrapper(model)
-topic_data = wrapped_model.prepare_topic_data(docs)'''
-
-if self.model.topic_labels_:
-  topic_names = [self.model.topic_labels_[topic] for topic in self.model.topics_]
-else:
-  topic_names = self.model.generate_topic_labels(nr_words=3)
-
-topic_data.keys()
-
-document_term_matrix = topic_data['document_term_matrix']
-document_topic_matrix = topic_data['document_topic_matrix']
-topic_term_matrix = topic_data['topic_term_matrix']
-topic_names = topic_data['topic_names']
-transform = topic_data['transform']
-document_representation = topic_data['document_representation']
-
-document_representation
-
-document_lengths = document_term_matrix.sum(axis=1)
-# Calculating an estimate of empirical topic frequencies
-topic_importances = (document_topic_matrix.T * document_lengths).sum(axis=1)
-topic_importances = np.squeeze(np.asarray(topic_importances))
-# Calculating empirical estimate of term-topic frequencies
-topic_term_importances = (topic_term_matrix.T * topic_importances).T
-
-
 
